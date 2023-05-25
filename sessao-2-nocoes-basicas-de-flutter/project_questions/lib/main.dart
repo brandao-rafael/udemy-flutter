@@ -2,43 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:project_questions/awnser.dart';
 import './question.dart';
 
-void main() => runApp(PerguntaApp());
+void main() => runApp(const PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var _selectedAwnser = 0;
+  final List<Map<String, Object>> _questions = const [
+    {
+      'text': 'Qual a sua cor favorita?',
+      'awnser': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+    },
+    {
+      'text': 'Qual o seu animal favorito?',
+      'awnser': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+    },
+    {
+      'text': 'Qual seu instrutor favorito?',
+      'awnser': ['Maria', 'João', 'Leo', 'Pedro'],
+    }
+  ];
+
+  bool get hasSelectedQuestion {
+    return _selectedAwnser < _questions.length;
+  }
 
   void _awnser() {
-    setState(() {
-      _selectedAwnser += 1;
-    });
-    print(_selectedAwnser);
+    if (hasSelectedQuestion) {
+      setState(() {
+        _selectedAwnser += 1;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, Object>> questions = [
-      {
-        'text': 'Qual a sua cor favorita?',
-        'awnser': ['Preto', 'Vermelho', 'Verde', 'Branco'],
-      },
-      {
-        'text': 'Qual o seu animal favorito?',
-        'awnser': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
-      },
-      {
-        'text': 'Qual seu instrutor favorito?',
-        'awnser': ['Maria', 'João', 'Leo', 'Pedro'],
-      }
 
-    ];
-
-    List<String> awnsers = questions[_selectedAwnser]['awnser'] as List<String>;
-
+    List<String> awnsers = hasSelectedQuestion
+      ? _questions[_selectedAwnser]['awnser'] as List<String>
+      : [];
     List<Widget> widgets = awnsers.map((text) => Awnser(text, _awnser)).toList();
-
-    // for (var awnser in awnsers) {
-    //   widgets.add(Awnser(awnser, _awnser));
-    // }
 
     return MaterialApp(
       home: Scaffold(
@@ -47,12 +48,12 @@ class _PerguntaAppState extends State<PerguntaApp> {
             child: Text('Questions')
           ),
         ),
-        body: Column(
+        body: hasSelectedQuestion ? Column(
           children: [
-            Question(questions[_selectedAwnser]['text'].toString()), // add toString()
+            Question(_questions[_selectedAwnser]['text'].toString()),
             ...widgets,
           ]
-        ),
+        ) : null,
       )
     );
   }
