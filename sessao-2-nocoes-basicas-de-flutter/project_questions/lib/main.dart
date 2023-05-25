@@ -32,11 +32,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
     ];
 
-    List<Widget> awnsers = [];
+    List<String> awnsers = questions[_selectedAwnser]['awnser'] as List<String>;
 
-    for (var awnser in questions[_selectedAwnser]['awnser'] as List) {
-      awnsers.add(Awnser(awnser, _awnser));
-    }
+    List<Widget> widgets = awnsers.map((text) => Awnser(text, _awnser)).toList();
+
+    // for (var awnser in awnsers) {
+    //   widgets.add(Awnser(awnser, _awnser));
+    // }
 
     return MaterialApp(
       home: Scaffold(
@@ -48,7 +50,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
         body: Column(
           children: [
             Question(questions[_selectedAwnser]['text'].toString()), // add toString()
-            ...awnsers,
+            ...widgets,
           ]
         ),
       )
