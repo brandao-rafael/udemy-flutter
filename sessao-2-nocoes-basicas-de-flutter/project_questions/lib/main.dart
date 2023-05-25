@@ -53,7 +53,14 @@ class _PerguntaAppState extends State<PerguntaApp> {
             Question(_questions[_selectedAwnser]['text'].toString()),
             ...widgets,
           ]
-        ) : null,
+        ) : const Center(
+          child: Text(
+            'Congratulations!',
+            style: TextStyle(
+              fontSize: 28
+            ),
+            ),
+        ),
       )
     );
   }
