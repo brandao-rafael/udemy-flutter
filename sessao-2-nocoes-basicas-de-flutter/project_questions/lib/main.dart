@@ -66,7 +66,7 @@ class _QuestionAppState extends State<QuestionApp> {
                     selectedAwnser: _selectedAwnser,
                     toRespond: _awnser,
                   )
-                : const Result(text: 'Congratulations!!!')));
+                : Result(_totalPoints)));
   }
 }
 
