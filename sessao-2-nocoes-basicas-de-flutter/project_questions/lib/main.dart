@@ -53,6 +53,13 @@ class _QuestionAppState extends State<QuestionApp> {
     print(_totalPoints);
   }
 
+  void _restartQuiz() {
+    setState(() {
+      _selectedAwnser = 0;
+      _totalPoints = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,7 +73,7 @@ class _QuestionAppState extends State<QuestionApp> {
                     selectedAwnser: _selectedAwnser,
                     toRespond: _awnser,
                   )
-                : Result(_totalPoints)));
+                : Result(_totalPoints, _restartQuiz)));
   }
 }
 
