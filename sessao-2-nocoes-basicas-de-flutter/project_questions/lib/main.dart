@@ -16,17 +16,27 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> questions = [
-      'Qual a sua cor favorita?',
-      'Qual o seu animal favorito?',
+    final List<Map<String, Object>> questions = [
+      {
+        'text': 'Qual a sua cor favorita?',
+        'awnser': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+      },
+      {
+        'text': 'Qual o seu animal favorito?',
+        'awnser': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+      },
+      {
+        'text': 'Qual seu instrutor favorito?',
+        'awnser': ['Maria', 'João', 'Leo', 'Pedro'],
+      }
+
     ];
 
-    final List<String> awnsers = [
-      'Resposta 1',
-      'Resposta 2',
-      'Resposta 3',
-      'Resposta 4',
-    ];
+    List<Widget> awnsers = [];
+
+    for (var awnser in questions[_selectedAwnser]['awnser'] as List) {
+      awnsers.add(Awnser(awnser, _awnser));
+    }
 
     return MaterialApp(
       home: Scaffold(
@@ -37,11 +47,8 @@ class _PerguntaAppState extends State<PerguntaApp> {
         ),
         body: Column(
           children: [
-            Question(questions[_selectedAwnser]),
-            Awnser(awnsers[0], _awnser),
-            Awnser(awnsers[1], _awnser),
-            Awnser(awnsers[2], _awnser),
-            Awnser(awnsers[3], _awnser),
+            Question(questions[_selectedAwnser]['text'].toString()), // add toString()
+            ...awnsers,
           ]
         ),
       )
