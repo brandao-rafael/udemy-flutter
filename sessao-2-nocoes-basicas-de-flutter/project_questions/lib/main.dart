@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:project_questions/awnser.dart';
-import './question.dart';
+import 'package:project_questions/quiz.dart';
+import 'package:project_questions/result.dart';
 
-void main() => runApp(const PerguntaApp());
+void main() => runApp(const QuestionApp());
 
-class _PerguntaAppState extends State<PerguntaApp> {
+class _QuestionAppState extends State<QuestionApp> {
   var _selectedAwnser = 0;
   final List<Map<String, Object>> _questions = const [
     {
@@ -35,12 +35,6 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> awnsers = hasSelectedQuestion
-      ? _questions[_selectedAwnser]['awnser'] as List<String>
-      : [];
-    List<Widget> widgets = awnsers.map((text) => Awnser(text, _awnser)).toList();
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -48,27 +42,20 @@ class _PerguntaAppState extends State<PerguntaApp> {
             child: Text('Questions')
           ),
         ),
-        body: hasSelectedQuestion ? Column(
-          children: [
-            Question(_questions[_selectedAwnser]['text'].toString()),
-            ...widgets,
-          ]
-        ) : const Center(
-          child: Text(
-            'Congratulations!',
-            style: TextStyle(
-              fontSize: 28
-            ),
-            ),
-        ),
+        body: hasSelectedQuestion ? Quiz(
+          questions: _questions,
+          selectedAwnser: _selectedAwnser,
+          toRespond: _awnser,
+        ) : const Result(text: 'Congratulations!!!')
       )
     );
   }
 }
 
-class PerguntaApp extends StatefulWidget {
-  const PerguntaApp({super.key});
+class QuestionApp extends StatefulWidget {
+  const QuestionApp({super.key});
 
   @override
-  _PerguntaAppState createState() => _PerguntaAppState();
+  // ignore: library_private_types_in_public_api
+  _QuestionAppState createState() => _QuestionAppState();
 }
