@@ -43,14 +43,14 @@ class MyHomePage extends StatelessWidget {
             Container(
               child: Card(
                 color: Colors.blue[300],
-                child: Text(
+                child: const Text(
                   "Gráfico",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
-            Card(
-              child: Text('Lista de transações'),
+            Column(
+              children: _transaction.map((tr) => Card(child: Text(tr.title))).toList(),
             )
           ],
         ));
