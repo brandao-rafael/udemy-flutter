@@ -41,6 +41,7 @@ class MyHomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
+              margin: const EdgeInsets.all(5),
               child: Card(
                 color: Colors.blue[300],
                 child: const Text(
@@ -66,7 +67,7 @@ class MyHomePage extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.all(10),
                       child: Text(
-                        tr.value.toString(),
+                        "R\$ ${tr.value.toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
