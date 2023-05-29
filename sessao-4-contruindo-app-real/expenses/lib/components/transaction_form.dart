@@ -18,7 +18,7 @@ class _TransactionFormState extends State<TransactionForm> {
     final title = titleController.text;
     final value = double.tryParse(valueController.text) ?? 0.0;
 
-    if(title.isEmpty || value <= 0) {
+    if (title.isEmpty || value <= 0) {
       return;
     }
 
@@ -51,8 +51,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 TextButton(
                   onPressed: _submitForm,
                   style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all(Colors.purple)),
+                    foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                  ),
                   child: const Text('Nova Transação'),
                 ),
               ],
