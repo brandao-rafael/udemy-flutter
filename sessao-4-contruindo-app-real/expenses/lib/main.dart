@@ -15,26 +15,23 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       home: const MyHomePage(),
       theme: tema.copyWith(
-        colorScheme: tema.colorScheme.copyWith(
-          primary: Colors.purple,
-          secondary: Colors.amber,
-        ),
-        textTheme: tema.textTheme.copyWith(
-          titleLarge: const TextStyle(
-            fontFamily: 'OpenSans',
+          colorScheme: tema.colorScheme.copyWith(
+            primary: Colors.purple,
+            secondary: Colors.amber,
+          ),
+          textTheme: tema.textTheme.copyWith(
+              titleLarge: const TextStyle(
+            fontFamily: 'Quicksand',
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,
-          )
-        ),
-        appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
+          )),
+          appBarTheme: const AppBarTheme(
+              titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 20,
             fontWeight: FontWeight.bold,
-          )
-        )
-      ),
+          ))),
     );
   }
 }
@@ -88,7 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Despesas pessoais'),
+        title: const Text(
+          'Despesas pessoais',
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

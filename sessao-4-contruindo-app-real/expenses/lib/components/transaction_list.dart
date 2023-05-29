@@ -44,8 +44,7 @@ class TransactionList extends StatelessWidget {
                   children: [
                     Text(
                       tr.title,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
                       DateFormat('d MMM y').format(tr.date),
@@ -69,3 +68,9 @@ class TransactionList extends StatelessWidget {
 
 // color: Theme.of(context).colorScheme.primary,
 // Basicamente é isso galera. Bons estudos!
+
+// Theme.of(context).textTheme.title
+// Você vai deixar assim
+
+// Theme.of(context).textTheme.headline6
+// Bons estudos!
