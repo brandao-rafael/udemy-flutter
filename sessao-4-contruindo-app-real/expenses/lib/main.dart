@@ -19,6 +19,7 @@ class ExpensesApp extends StatelessWidget {
           colorScheme: tema.colorScheme.copyWith(
             primary: Colors.purple,
             secondary: Colors.amber,
+            error: Colors.red
           ),
           textTheme: tema.textTheme.copyWith(
               titleLarge: const TextStyle(
@@ -71,6 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((data) => data.id == id);
+    });
+  }
+
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -99,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransaction),
-            TransactionList(_transactions),
+            TransactionList(_transactions, _removeTransaction),
           ],
         ),
       ),
