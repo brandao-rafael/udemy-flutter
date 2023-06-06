@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:io';
 import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
@@ -33,9 +34,9 @@ class ExpensesApp extends StatelessWidget {
               )),
           appBarTheme: AppBarTheme(
               titleTextStyle: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20 * MediaQuery.of(context).textScaleFactor,
-                fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+            fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+            fontWeight: FontWeight.bold,
           ))),
     );
   }
@@ -96,15 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
         'Despesas pessoais',
       ),
       actions: [
-      if (isLandscape)
-        IconButton(
-          icon: Icon(_showChart ? Icons.list : Icons.show_chart),
-          onPressed: () {
-            setState(() {
-              _showChart = !_showChart;
-            });
-          },
-        ),
+        if (isLandscape)
+          IconButton(
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+          ),
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
@@ -112,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
     final availableHeight = mediaQuery.size.height -
-      appBar.preferredSize.height -
-      mediaQuery.padding.top;
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -121,22 +122,24 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (_showChart || !isLandscape)
-            SizedBox(
-              height: availableHeight * (isLandscape ? 0.8 : 0.3),
-              child: Chart(_recentTransaction),
-            ),
+              SizedBox(
+                height: availableHeight * (isLandscape ? 0.8 : 0.3),
+                child: Chart(_recentTransaction),
+              ),
             if (!_showChart || !isLandscape)
-            SizedBox(
-              height: availableHeight * (isLandscape ? 1 : 0.7),
-              child: TransactionList(_transactions, _removeTransaction),
-            ),
+              SizedBox(
+                height: availableHeight * (isLandscape ? 1 : 0.7),
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => _openTransactionFormModal(context),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () => _openTransactionFormModal(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
