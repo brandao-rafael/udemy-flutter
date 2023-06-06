@@ -21,17 +21,21 @@ class ExpensesApp extends StatelessWidget {
             secondary: Colors.amber,
           ),
           textTheme: tema.textTheme.copyWith(
-            titleLarge: const TextStyle(
-              fontFamily: 'Quicksand',
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-          )),
+              titleLarge: const TextStyle(
+                fontFamily: 'Quicksand',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              labelLarge: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              )),
           appBarTheme: const AppBarTheme(
-            titleTextStyle: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ))),
     );
   }
@@ -94,10 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return TransactionForm(_addTransaction);
-        });
+      context: context,
+      builder: (_) {
+        return TransactionForm(_addTransaction);
+      },
+    );
   }
 
   @override
