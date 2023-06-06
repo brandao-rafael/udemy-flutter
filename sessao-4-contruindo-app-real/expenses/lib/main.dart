@@ -21,9 +21,9 @@ class ExpensesApp extends StatelessWidget {
               secondary: Colors.amber,
               error: Colors.red),
           textTheme: tema.textTheme.copyWith(
-              titleLarge: const TextStyle(
+              titleLarge: TextStyle(
                 fontFamily: 'Quicksand',
-                fontSize: 18,
+                fontSize: 18 * MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -31,11 +31,11 @@ class ExpensesApp extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               )),
-          appBarTheme: const AppBarTheme(
+          appBarTheme: AppBarTheme(
               titleTextStyle: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+                fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+                fontWeight: FontWeight.bold,
           ))),
     );
   }
