@@ -35,9 +35,9 @@ class ExpensesApp extends StatelessWidget {
               )),
           appBarTheme: AppBarTheme(
               titleTextStyle: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 20 * MediaQuery.of(context).textScaleFactor,
-            fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+                fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+                fontWeight: FontWeight.bold,
           ))),
     );
   }
@@ -104,7 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;
-    final chartList = Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
+    final chartList =
+        Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
 
     final actions = [
       if (isLandscape)
