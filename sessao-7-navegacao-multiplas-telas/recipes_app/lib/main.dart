@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
           fontSize: 20,
         ),
         labelLarge: const TextStyle(
+          color: Colors.black,
           fontFamily: 'RobotoCondensed',
+          fontSize: 20
         )),
       ),
       routes: {
