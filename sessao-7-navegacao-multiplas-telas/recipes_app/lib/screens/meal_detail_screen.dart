@@ -72,7 +72,7 @@ class MealDetailScreen extends StatelessWidget {
                       leading: CircleAvatar(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor: Colors.white,
-                        child: Text('${i+1}'),
+                        child: Text('${i + 1}'),
                       ),
                       title: Text(meal.steps[i]),
                     ),
@@ -83,6 +83,12 @@ class MealDetailScreen extends StatelessWidget {
             ))
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pop(meal.title);
+        },
+        child: const Icon(Icons.star),
       ),
     );
   }
