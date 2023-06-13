@@ -3,14 +3,17 @@ import 'package:recipes_app/components/main_drawer.dart';
 import 'package:recipes_app/models/settings.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final Function(Settings) onSettingChanged;
+  
+  const SettingsScreen(this.onSettingChanged, {super.key});
+
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  var settings = Settngs();
+  var settings = Settings();
 
   Widget _createSwitch(
     String title,
@@ -22,7 +25,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       title: Text(title),
       subtitle: Text(subtitle),
       value: value,
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChanged(value);
+        widget.onSettingChanged(settings);
+      },
     );
   }
 
