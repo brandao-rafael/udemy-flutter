@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         ),
       textTheme: theme.textTheme.copyWith(
         titleLarge: const TextStyle(
+          color: Colors.black,
           fontFamily: 'Raleway',
           fontSize: 20,
         ),
