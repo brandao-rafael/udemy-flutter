@@ -50,7 +50,6 @@ class _QuestionAppState extends State<QuestionApp> {
         _totalPoints += points;
       });
     }
-    print(_totalPoints);
   }
 
   void _restartQuiz() {
