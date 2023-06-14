@@ -10,10 +10,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
     return MaterialApp(
       title: 'Shop',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
+        fontFamily: 'Lato',
+        colorScheme: theme.colorScheme.copyWith(
+          secondary: Colors.deepOrange,
+        )
+        
       ),
       home: ProductsOverviewPage(),
       debugShowCheckedModeBanner: false,
