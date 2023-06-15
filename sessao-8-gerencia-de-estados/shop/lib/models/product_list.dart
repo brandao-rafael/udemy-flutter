@@ -12,6 +12,10 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
+  int get itemsCount {
+    return _items.length;
+  }
+
 
   // bool _showFavoriteOnly = false;
 
