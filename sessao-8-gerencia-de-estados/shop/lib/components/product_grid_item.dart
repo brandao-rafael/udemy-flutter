@@ -4,9 +4,8 @@ import 'package:shop/models/cart.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/utils/app_routes.dart';
 
-class ProductItem extends StatelessWidget {
-
-  const ProductItem({
+class ProductGridItem extends StatelessWidget {
+  const ProductGridItem({
     super.key,
   });
 
@@ -15,7 +14,6 @@ class ProductItem extends StatelessWidget {
     final Product product = Provider.of<Product>(context, listen: false);
     final Cart cart = Provider.of<Cart>(context, listen: false);
 
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -23,7 +21,9 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black54,
           leading: Consumer<Product>(
             builder: (ctx, product, _) => IconButton(
-              icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border_outlined),
+              icon: Icon(product.isFavorite
+                  ? Icons.favorite
+                  : Icons.favorite_border_outlined),
               onPressed: () {
                 product.toggleFavorite();
               },
@@ -38,6 +38,18 @@ class ProductItem extends StatelessWidget {
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               cart.addItem(product);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Produto adicionado com sucesso'),
+                  duration: const Duration(seconds: 2),
+                  action: SnackBarAction(
+                    label: 'Desfazer',
+                    onPressed: () {
+                      cart.removeSingleItem(product.id);
+                    },
+                  ),
+                ),
+              );
             },
             color: Theme.of(context).colorScheme.secondary,
           ),
