@@ -33,13 +33,29 @@ class _ProductFormPageState extends State<ProductFormPage> {
     _imageUrlFocus.removeListener(updateImage);
   }
 
+  bool isValidImageUrl (String url) {
+    bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
+    bool endsWithFile = url.toLowerCase().endsWith('.png') ||
+      url.toLowerCase().endsWith('.jpg') ||
+      url.toLowerCase().endsWith('.jpeg');
+    print(endsWithFile);
+    print(isValidUrl);
+    print(endsWithFile && isValidUrl);
+    return isValidUrl && endsWithFile;
+  }
+
   void updateImage() {
     setState(() {});
   }
 
   void _submitForm() {
+    final isValid =_formKey.currentState?.validate() ?? false;
+
+    if(!isValid) {
+      return;
+    }
+
     _formKey.currentState?.save();
-    print(_formData.values);
     final newProduct = Product(
       id: Random().nextDouble().toString(),
       name: _formData['name'] as String,
@@ -76,6 +92,17 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   FocusScope.of(context).requestFocus(_priceFocus);
                 },
                 onSaved: (newValue) => _formData['name'] = newValue ?? '',
+                // ignore: no_leading_underscores_for_local_identifiers
+                validator: (_name) {
+                  final name = _name ?? '';
+                  if (name.trim().isEmpty) {
+                    return 'Nome é obrigatório';
+                  }
+                  if (name.trim().length < 3) {
+                    return 'Nome precisa ter pelo menos 3 letras';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Preço'),
@@ -89,6 +116,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 ),
                 onSaved: (newValue) =>
                     _formData['price'] = double.parse(newValue ?? '0'),
+                validator: (_price) {
+                  final priceString = _price ?? '';
+                  final price = double.tryParse(priceString) ?? -1;
+                  if(price <= 0) {
+                    return 'Informe um preço válido';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
@@ -97,6 +132,20 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 maxLines: 3,
                 onSaved: (newValue) =>
                     _formData['description'] = newValue ?? '',
+                validator: (_description) {
+                  final description = _description ?? '';
+                  if (description.trim().isEmpty) {
+                    return 'Nome é obrigatória';
+                  }
+                  if (description.split(' ').length < 3) {
+                    return 'Descrição precisa ter pelo menos 3 palavras';
+                  }
+
+                  if (description.trim().length < 10) {
+                    return 'Descrição precisa ter pelo menos 10 letras';
+                  }
+                  return null;
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -104,7 +153,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   Expanded(
                     child: TextFormField(
                       decoration:
-                          const InputDecoration(labelText: 'URL da Imagen'),
+                          const InputDecoration(labelText: 'Url da Imagen'),
                       focusNode: _imageUrlFocus,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.url,
@@ -112,6 +161,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       onFieldSubmitted: (_) => _submitForm(),
                       onSaved: (newValue) =>
                           _formData['imageUrl'] = newValue ?? '',
+                      validator: (_imageUrl) {
+                        final imageUrl = _imageUrl ?? '';
+                        if (!isValidImageUrl(imageUrl)) {
+                          return 'Informe uma Url válida';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
@@ -125,7 +181,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         border: Border.all(color: Colors.grey, width: 1)),
                     alignment: Alignment.center,
                     child: SizedBox(
-                      child: _imageUrlController.text.isEmpty
+                      child: _imageUrlController.text.trim().isEmpty
                           ? const Text('Informe a URL')
                           : FittedBox(
                               fit: BoxFit.cover,
