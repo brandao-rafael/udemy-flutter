@@ -10,12 +10,26 @@ class ProductFormPage extends StatefulWidget {
 class _ProductFormPageState extends State<ProductFormPage> {
   final _priceFocus = FocusNode();
   final _descriptionFocus = FocusNode();
+  final _imageUrlFocus = FocusNode();
+  final _imageUrlController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _imageUrlFocus.addListener(updateImage);
+  }
 
   @override
   void dispose() {
     super.dispose();
     _priceFocus.dispose();
     _descriptionFocus.dispose();
+    _imageUrlFocus.dispose();
+    _imageUrlFocus.removeListener(updateImage);
+  }
+
+  void updateImage() {
+    setState(() {});
   }
 
   @override
@@ -49,10 +63,41 @@ class _ProductFormPageState extends State<ProductFormPage> {
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
-                textInputAction: TextInputAction.next,
                 focusNode: _descriptionFocus,
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration:
+                          const InputDecoration(labelText: 'URL da Imagen'),
+                      focusNode: _imageUrlFocus,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.url,
+                      controller: _imageUrlController,
+                    ),
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: const EdgeInsetsDirectional.only(
+                      top: 10,
+                      start: 10,
+                    ),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1)),
+                    alignment: Alignment.center,
+                    child: _imageUrlController.text.isEmpty
+                        ? const Text('Informe a Url')
+                        : FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.network(_imageUrlController.text),
+                        ),
+                  )
+                ],
               ),
             ],
           ),
