@@ -14,18 +14,27 @@ class ProductList with ChangeNotifier {
       _items.where((product) => product.isFavorite == true).toList();
 
   void addProduct(Product product) {
-    http.post(
-      Uri.parse('$_baseUrl/products.json'),
-      body: jsonEncode({
-        'name': product.name,
-        'description': product.description,
-        'price': product.price,
-        'imageUrl': product.imageUrl,
-        'isFavorite': product.isFavorite,
-      })
-    );
-    _items.add(product);
-    notifyListeners();
+    final future = http.post(Uri.parse('$_baseUrl/products.json'),
+        body: jsonEncode({
+          'name': product.name,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+          'isFavorite': product.isFavorite,
+        }));
+
+    future.then((response) {
+      final id = jsonDecode(response.body)['name'];
+      _items.add(Product(
+        id: id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        isFavorite: product.isFavorite,
+      ));
+      notifyListeners();
+    });
   }
 
   void saveProduct(Map<String, Object> data) {
@@ -49,12 +58,12 @@ class ProductList with ChangeNotifier {
   void updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
 
-    if(index >= 0) {
+    if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
   }
-  
+
   void removeProduct(Product product) {
     int index = _items.indexWhere((element) => element.id == product.id);
 
