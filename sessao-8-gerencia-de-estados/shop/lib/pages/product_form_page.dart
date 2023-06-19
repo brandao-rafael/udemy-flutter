@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:shop/models/product.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -16,7 +15,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _imageUrlFocus = FocusNode();
   final _imageUrlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
 
   @override
   void initState() {
@@ -33,14 +32,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
     _imageUrlFocus.removeListener(updateImage);
   }
 
-  bool isValidImageUrl (String url) {
+  bool isValidImageUrl(String url) {
     bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
     bool endsWithFile = url.toLowerCase().endsWith('.png') ||
-      url.toLowerCase().endsWith('.jpg') ||
-      url.toLowerCase().endsWith('.jpeg');
-    print(endsWithFile);
-    print(isValidUrl);
-    print(endsWithFile && isValidUrl);
+        url.toLowerCase().endsWith('.jpg') ||
+        url.toLowerCase().endsWith('.jpeg');
     return isValidUrl && endsWithFile;
   }
 
@@ -49,22 +45,18 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   void _submitForm() {
-    final isValid =_formKey.currentState?.validate() ?? false;
+    final isValid = _formKey.currentState?.validate() ?? false;
 
-    if(!isValid) {
+    if (!isValid) {
       return;
     }
-
     _formKey.currentState?.save();
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
 
-    print(newProduct.id);
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).saveProduct(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -119,7 +111,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 validator: (_price) {
                   final priceString = _price ?? '';
                   final price = double.tryParse(priceString) ?? -1;
-                  if(price <= 0) {
+                  if (price <= 0) {
                     return 'Informe um preço válido';
                   }
                   return null;

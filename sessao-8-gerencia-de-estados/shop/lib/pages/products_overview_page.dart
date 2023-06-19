@@ -36,9 +36,14 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 if (selectedValue == FilterOptions.Favorite) {
-                  _showFavoriteOnly = true;
+                  setState(() {
+                    _showFavoriteOnly = true;
+                  });
                 } else {
-                  _showFavoriteOnly = false;
+                  setState(() {
+                    _showFavoriteOnly = false;
+                    
+                  });
                 }
               });
             },
