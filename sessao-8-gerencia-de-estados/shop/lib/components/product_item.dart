@@ -43,7 +43,7 @@ class ProductItem extends StatelessWidget {
                 content: Text('Deseja mesmo remover o item ${product.name}'),
                 actions: [
                   TextButton(
-                    onPressed: () => Navigator.pop(context, 'Cancelar'),
+                    onPressed: () => Navigator.of(ctx).pop(),
                     child: const Text('Cancelar'),
                   ),
                   TextButton(
@@ -52,7 +52,7 @@ class ProductItem extends StatelessWidget {
                         context,
                         listen: false,
                       ).removeProduct(product);
-                      Navigator.pop(context, 'Confirmar');
+                      Navigator.of(ctx).pop();
                     },
                     child: Text(
                       'Confirmar',
