@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
@@ -55,28 +56,36 @@ class ProductList with ChangeNotifier {
   Future<void> updateProduct(Product product) async {
     int index = _items.indexWhere((p) => p.id == product.id);
 
-
     if (index >= 0) {
       await http.patch(Uri.parse('$_baseUrl/products/${product.id}.json'),
-        body: jsonEncode({
-          'name': product.name,
-          'description': product.description,
-          'price': product.price,
-          'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
-        }));
+          body: jsonEncode({
+            'name': product.name,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+          }));
       _items[index] = product;
       notifyListeners();
     }
     return Future.value();
   }
 
-  void removeProduct(Product product) {
+  Future<void> removeProduct(Product product) async {
     int index = _items.indexWhere((element) => element.id == product.id);
 
     if (index >= 0) {
-      _items.removeWhere((element) => element.id == product.id);
+      final product = _items[index];
+      _items.remove(product);
       notifyListeners();
+
+      final response = await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json'));
+
+      if(response.statusCode >= 400) {
+        _items.insert(index, product);
+        notifyListeners();
+        throw HttpException(msg: 'Não foi possivel excluir o produto', statusCode: response.statusCode);
+      }
     }
   }
 
@@ -86,9 +95,9 @@ class ProductList with ChangeNotifier {
 
   Future<void> loadProducts() async {
     _items.clear();
-  
+
     final response = await http.get(Uri.parse('$_baseUrl/products.json'));
-    
+
     if (response.body == 'null') return;
 
     Map<String, dynamic> data = jsonDecode(response.body);
@@ -106,23 +115,4 @@ class ProductList with ChangeNotifier {
     });
     notifyListeners();
   }
-
-  // bool _showFavoriteOnly = false;
-
-  // List<Product> get items {
-  //   if (_showFavoriteOnly) {
-  //     return _items.where((product) => product.isFavorite).toList();
-  //   }
-  //   return [..._items];
-  // }
-
-  // void showFavoriteOnly () {
-  //   _showFavoriteOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll () {
-  //   _showFavoriteOnly = false;
-  //   notifyListeners();
-  // }
 }
