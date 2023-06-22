@@ -1,7 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:shop/models/auth.dart';
 
 // ignore: constant_identifier_names
 enum AuthMode { Signup, Login }
@@ -15,6 +16,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.Login;
@@ -28,7 +30,7 @@ class _AuthFormState extends State<AuthForm> {
 
   void _switchAuthMode() {
     setState(() {
-      if(_isLogin()) {
+      if (_isLogin()) {
         _authMode = AuthMode.Signup;
       } else {
         _authMode = AuthMode.Login;
@@ -36,24 +38,27 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final _isValid = _formKey.currentState?.validate() ?? false;
-    
-    if(!_isValid) {
+
+    if (!_isValid) {
       return;
     }
-    
+
     setState(() => _isLoading = true);
 
     _formKey.currentState?.save();
+    Auth auth = Provider.of(context, listen: false);
 
-    if(_isLogin()) {
-
+    if (_isLogin()) {
     } else {
-      
+      await auth.signup(
+        email: _authData['email']!,
+        password: _authData['password']!,
+      );
     }
 
-    setState(() => _isLoading = false);  
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -71,6 +76,7 @@ class _AuthFormState extends State<AuthForm> {
           child: Column(
             children: [
               TextFormField(
+                controller: _emailController,
                 decoration: const InputDecoration(labelText: '  E-mail'),
                 keyboardType: TextInputType.emailAddress,
                 onSaved: (email) => _authData['email'] = email ?? '',
@@ -87,7 +93,7 @@ class _AuthFormState extends State<AuthForm> {
                 decoration: const InputDecoration(labelText: '  Senha'),
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
-                onSaved: (password) => _authData['email'] = password ?? '',
+                onSaved: (password) => _authData['password'] = password ?? '',
                 validator: _authMode == AuthMode.Login
                     ? null
                     : (_password) {
@@ -115,7 +121,7 @@ class _AuthFormState extends State<AuthForm> {
                         },
                 ),
               const SizedBox(height: 20),
-              if(_isLoading)
+              if (_isLoading)
                 const CircularProgressIndicator()
               else
                 ElevatedButton(
@@ -134,9 +140,9 @@ class _AuthFormState extends State<AuthForm> {
               const Spacer(),
               TextButton(
                 onPressed: _switchAuthMode,
-                child: Text(
-                  _isLogin() ? 'Deseja se cadastrar?' : 'Já possui cadastro?'
-                ),
+                child: Text(_isLogin()
+                    ? 'Deseja se cadastrar?'
+                    : 'Já possui cadastro?'),
               )
             ],
           ),
