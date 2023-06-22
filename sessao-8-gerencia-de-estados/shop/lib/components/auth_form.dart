@@ -51,10 +51,14 @@ class _AuthFormState extends State<AuthForm> {
     Auth auth = Provider.of(context, listen: false);
 
     if (_isLogin()) {
+      await auth.login(
+        _authData['email']!,
+        _authData['password']!,
+      );
     } else {
       await auth.signup(
-        email: _authData['email']!,
-        password: _authData['password']!,
+        _authData['email']!,
+        _authData['password']!,
       );
     }
 
