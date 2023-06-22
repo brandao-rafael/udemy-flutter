@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: constant_identifier_names
 enum AuthMode { Signup, Login }
@@ -14,14 +15,45 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
-  final AuthMode _authMode = AuthMode.Login;
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
 
-  void _submit() {
+  bool _isLogin() => _authMode == AuthMode.Login;
+  bool _isSignup() => _authMode == AuthMode.Signup;
 
+  void _switchAuthMode() {
+    setState(() {
+      if(_isLogin()) {
+        _authMode = AuthMode.Signup;
+      } else {
+        _authMode = AuthMode.Login;
+      }
+    });
+  }
+
+  void _submit() {
+    final _isValid = _formKey.currentState?.validate() ?? false;
+    
+    if(!_isValid) {
+      return;
+    }
+    
+    setState(() => _isLoading = true);
+
+    _formKey.currentState?.save();
+
+    if(_isLogin()) {
+
+    } else {
+      
+    }
+
+    setState(() => _isLoading = false);  
   }
 
   @override
@@ -32,9 +64,10 @@ class _AuthFormState extends State<AuthForm> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
         padding: const EdgeInsets.all(16),
-        height: 320,
+        height: _isLogin() ? 310 : 400,
         width: deviceSize.width * 0.75,
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -43,7 +76,7 @@ class _AuthFormState extends State<AuthForm> {
                 onSaved: (email) => _authData['email'] = email ?? '',
                 validator: (_email) {
                   final email = _email ?? '';
-                  if(email.trim().isEmpty || !email.contains('@')) {
+                  if (email.trim().isEmpty || !email.contains('@')) {
                     return 'Informe um email válido';
                   }
                   return null;
@@ -55,43 +88,54 @@ class _AuthFormState extends State<AuthForm> {
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
                 onSaved: (password) => _authData['email'] = password ?? '',
-                validator: _authMode == AuthMode.Login ? null : (_password) {
-                  final password = _password ?? '';
-                  if (password.isEmpty || password.length < 5) {
-                    return 'Informe uma senha válida';
-                  }
-                  return null;
-                },
+                validator: _authMode == AuthMode.Login
+                    ? null
+                    : (_password) {
+                        final password = _password ?? '';
+                        if (password.isEmpty || password.length < 5) {
+                          return 'Informe uma senha válida';
+                        }
+                        return null;
+                      },
               ),
-              if (_authMode == AuthMode.Signup)
+              if (_isSignup())
                 TextFormField(
                   decoration:
                       const InputDecoration(labelText: '  Confirme sua Senha'),
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
-                  validator: (_password) {
-                    final password = _password ?? '';
-                    if(password != _passwordController.text) {
-                      return 'Senhas informadas não conferem.';
-                    }
-                    return null;
-
-                  } ,
+                  validator: _isLogin()
+                      ? null
+                      : (_password) {
+                          final password = _password ?? '';
+                          if (password != _passwordController.text) {
+                            return 'Senhas informadas não conferem.';
+                          }
+                          return null;
+                        },
                 ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submit,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)
+              if(_isLoading)
+                const CircularProgressIndicator()
+              else
+                ElevatedButton(
+                  onPressed: _submit,
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 8,
+                      )),
+                  child: Text(
+                    _isLogin() ? 'ENTRAR' : 'REGISTRAR',
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30 ,
-                    vertical: 8,
-                  )
                 ),
+              const Spacer(),
+              TextButton(
+                onPressed: _switchAuthMode,
                 child: Text(
-                  _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
+                  _isLogin() ? 'Deseja se cadastrar?' : 'Já possui cadastro?'
                 ),
               )
             ],
