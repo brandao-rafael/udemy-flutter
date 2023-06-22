@@ -24,26 +24,32 @@ class MyApp extends StatelessWidget {
     final ThemeData theme = ThemeData();
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ProductList()),
+        ChangeNotifierProvider(create: (_) => Auth()),
+        ChangeNotifierProxyProvider<Auth, ProductList>(
+          create: (_) => ProductList('', []),
+          update: (ctx, auth, previous) {
+            return ProductList(
+              auth.token ?? '',
+              previous?.items ?? [],
+            );
+          },
+        ),
         ChangeNotifierProvider(create: (_) => Cart()),
         ChangeNotifierProvider(create: (_) => OrderList()),
-        ChangeNotifierProvider(create: (_) => Auth()),
       ],
       child: MaterialApp(
         title: 'Shop',
         theme: ThemeData(
-          fontFamily: 'Lato',
-          colorScheme: theme.colorScheme.copyWith(
-            primary: Colors.purple,
-            secondary: Colors.deepOrange,
-          )
-          
-        ),
+            fontFamily: 'Lato',
+            colorScheme: theme.colorScheme.copyWith(
+              primary: Colors.purple,
+              secondary: Colors.deepOrange,
+            )),
         debugShowCheckedModeBanner: false,
         routes: {
           AppRoutes.AUTH_OR_HOME: (ctx) => const AuthOrHomePage(),
-          AppRoutes.PRODUCT_DETAIL:(ctx) => const ProductDetailPage(),
-          AppRoutes.CART:(ctx) => const CartPage(),
+          AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
+          AppRoutes.CART: (ctx) => const CartPage(),
           AppRoutes.ORDERS: (ctx) => const OrdersPage(),
           AppRoutes.PRODUCTS: (ctx) => const ProductsPage(),
           AppRoutes.PRODUCT_FORM: (ctx) => const ProductFormPage(),
