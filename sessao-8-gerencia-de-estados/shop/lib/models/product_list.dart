@@ -11,25 +11,59 @@ import 'package:shop/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
   final String _token;
+  final String _userId;
   // ignore: prefer_final_fields
   List<Product> _items = [];
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
       _items.where((product) => product.isFavorite == true).toList();
 
-  ProductList(this._token, this._items);
-  
+  ProductList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
+
+  Future<void> loadProducts() async {
+    _items.clear();
+
+    final response = await http
+        .get(Uri.parse('${Constants.BASE_URL}/products.json?auth=$_token'));
+
+    final favResponse = await http.get(
+      Uri.parse("${Constants.BASE_URL}/userFavorites/$_userId.json?auth=$_token"),
+    );
+
+    Map<String, dynamic> favData = favResponse.body == 'null' ? {} : jsonDecode(favResponse.body);
+
+    if(response.body == 'null') return;
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    data.forEach((productId, productData) {
+      final isFavorite = favData[productId] ?? false;
+      _items.add(
+        Product(
+          id: productId,
+          name: productData['name'],
+          description: productData['description'],
+          price: productData['price'],
+          imageUrl: productData['imageUrl'],
+          isFavorite: isFavorite,
+        ),
+      );
+    });
+    notifyListeners();
+  }
 
   Future<void> addProduct(Product product) async {
-    final response =
-        await http.post(Uri.parse('${Constants.BASE_URL}/products.json?auth=$_token'),
-            body: jsonEncode({
-              'name': product.name,
-              'description': product.description,
-              'price': product.price,
-              'imageUrl': product.imageUrl,
-              'isFavorite': product.isFavorite,
-            }));
+    final response = await http.post(
+        Uri.parse('${Constants.BASE_URL}/products.json?auth=$_token'),
+        body: jsonEncode({
+          'name': product.name,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+        }));
 
     final id = jsonDecode(response.body)['name'];
     _items.add(Product(
@@ -38,7 +72,6 @@ class ProductList with ChangeNotifier {
       description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
-      isFavorite: product.isFavorite,
     ));
     notifyListeners();
   }
@@ -66,13 +99,13 @@ class ProductList with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-          Uri.parse('${Constants.BASE_URL}/products/${product.id}.json?auth=$_token'),
+          Uri.parse(
+              '${Constants.BASE_URL}/products/${product.id}.json?auth=$_token'),
           body: jsonEncode({
             'name': product.name,
             'description': product.description,
             'price': product.price,
             'imageUrl': product.imageUrl,
-            'isFavorite': product.isFavorite,
           }));
       _items[index] = product;
       notifyListeners();
@@ -88,8 +121,8 @@ class ProductList with ChangeNotifier {
       _items.remove(product);
       notifyListeners();
 
-      final response = await http.delete(
-          Uri.parse('${Constants.BASE_URL}/products/${product.id}.json?auth=$_token'));
+      final response = await http.delete(Uri.parse(
+          '${Constants.BASE_URL}/products/${product.id}.json?auth=$_token'));
 
       if (response.statusCode >= 400) {
         _items.insert(index, product);
@@ -105,27 +138,4 @@ class ProductList with ChangeNotifier {
     return _items.length;
   }
 
-  Future<void> loadProducts() async {
-    _items.clear();
-
-    final response =
-        await http.get(Uri.parse('${Constants.BASE_URL}/products.json?auth=$_token'));
-
-    if (response.body == 'null') return;
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    data.forEach((productId, productData) {
-      _items.add(
-        Product(
-          id: productId,
-          name: productData['name'],
-          description: productData['description'],
-          price: productData['price'],
-          imageUrl: productData['imageUrl'],
-          isFavorite: productData['isFavorite'],
-        ),
-      );
-    });
-    notifyListeners();
-  }
 }
