@@ -91,12 +91,13 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
+  void logout() async {
     _token = null;
     _email = null;
     _userId = null;
     _expiryDate = null;
     _clearLogoutTimer();
+    await Store.remove('userData');
     notifyListeners();
   }
 
