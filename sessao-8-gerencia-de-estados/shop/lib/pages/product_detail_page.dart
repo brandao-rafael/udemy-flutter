@@ -9,16 +9,14 @@ class ProductDetailPage extends StatelessWidget {
     final Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text(product.name)),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: Hero(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(product.name),
+              background: Hero(
                 tag: product.id,
                 child: Image.network(
                   product.imageUrl,
@@ -26,9 +24,13 @@ class ProductDetailPage extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
             const SizedBox(height: 10),
             Text(
               'R\$${product.price}',
+              textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             const SizedBox(height: 10),
@@ -40,8 +42,10 @@ class ProductDetailPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-          ],
-        ),
+            SizedBox(height: 1000,)
+            ]),
+          )
+        ],
       ),
     );
   }
