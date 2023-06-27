@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    final theme = ThemeData();
     return MaterialApp(
       title: 'Great Places',
       theme: ThemeData(
@@ -26,10 +27,13 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.deepPurple)
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+        colorScheme: theme.colorScheme.copyWith(
           background: Colors.deepPurple[50],
           primary: Colors.deepPurple,
+          secondary: Colors.amber,
+        ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Colors.amber
         ),
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
