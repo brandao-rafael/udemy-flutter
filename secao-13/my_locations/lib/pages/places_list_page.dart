@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:my_locations/providers/great_places.dart';
 import 'package:my_locations/utils/app_routes.dart';
