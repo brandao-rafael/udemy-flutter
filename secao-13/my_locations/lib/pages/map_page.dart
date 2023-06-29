@@ -4,11 +4,13 @@ import 'package:my_locations/model/place.dart';
 
 class MapPage extends StatefulWidget {
   final PlaceLocation initialLocation;
+  final bool isReadonly;
   const MapPage({
     this.initialLocation = const PlaceLocation(
       latitude: 37.419857,
       longitude: -122.078827,
     ),
+    this.isReadonly = false,
     super.key,
   });
 
@@ -17,6 +19,14 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  LatLng? _pickedPosition;
+
+  void _selectPosition(LatLng position) {
+    setState(() {
+      _pickedPosition = position;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +34,23 @@ class _MapPageState extends State<MapPage> {
         title: const Text('Selecione...'),
       ),
       body: GoogleMap(
-          initialCameraPosition: CameraPosition(
-        target: LatLng(
-          widget.initialLocation.latitude,
-          widget.initialLocation.longitude,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(
+            widget.initialLocation.latitude,
+            widget.initialLocation.longitude,
+          ),
+          zoom: 13,
         ),
-        zoom: 13
-      )),
+        onTap: widget.isReadonly ? null : _selectPosition,
+        markers: _pickedPosition == null
+            ? {}
+            : {
+                Marker(
+                  markerId: const MarkerId('p1'),
+                  position: _pickedPosition!,
+                ),
+              },
+      ),
     );
   }
 }
