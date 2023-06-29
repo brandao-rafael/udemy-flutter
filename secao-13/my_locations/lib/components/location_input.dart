@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:my_locations/pages/map_page.dart';
 import 'package:my_locations/utils/location_util.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  final Function onSelectPosition;
+
+  const LocationInput(this.onSelectPosition, {super.key});
 
   @override
   State<LocationInput> createState() => _LocationInputState();
@@ -14,22 +17,37 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   String _previewImageUrl = '';
 
-  Future<void> _getCurrentUserLocation() async {
-    final locData = await Location().getLocation();
-    final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
-        latitude: locData.latitude!, longitude: locData.longitude!);
-    setState(() {
-      _previewImageUrl = staticMapImageUrl;
+  void _showPreview(double latitude, double longitude) {
+    final selectedPosition = LocationUtil.generateLocationPreviewImage(
+        latitude: latitude,
+        longitude: longitude,
+      );
+      setState(() {
+      _previewImageUrl = selectedPosition;
     });
   }
 
+  Future<void> _getCurrentUserLocation() async {
+    try {
+      final locData = await Location().getLocation();
+      _showPreview(locData.latitude!, locData.longitude!);
+      widget.onSelectPosition(LatLng(locData.latitude!, locData.longitude!));
+    } catch (e) {
+      return;
+    }
+  }
+
   Future<void> _selectOnMap() async {
-    final selectedLocation = await Navigator.of(context).push(MaterialPageRoute(
+    final LatLng? selectedPosition =
+        await Navigator.of(context).push(MaterialPageRoute(
       fullscreenDialog: true,
       builder: (ctx) => const MapPage(),
     ));
 
-    if (selectedLocation == null) return;
+    if (selectedPosition == null) return;
+
+    _showPreview(selectedPosition.latitude, selectedPosition.longitude);
+    widget.onSelectPosition(selectedPosition);
   }
 
   @override
