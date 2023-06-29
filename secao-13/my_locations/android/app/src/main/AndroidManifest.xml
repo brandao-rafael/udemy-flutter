@@ -1,10 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="my_locations">
     <application
         android:label="my_locations"
-        android:name="${applicationName}"
+        android:name=".CustomApplication"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyBwLakcLS2pIOziBDbSBL5Rfp-4HQN62qo"/>
+               android:value="${GOOGLE_API_KEY}"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

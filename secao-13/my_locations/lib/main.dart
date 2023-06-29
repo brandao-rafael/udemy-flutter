@@ -4,8 +4,10 @@ import 'package:my_locations/pages/places_list_page.dart';
 import 'package:my_locations/providers/great_places.dart';
 import 'package:my_locations/utils/app_routes.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 
