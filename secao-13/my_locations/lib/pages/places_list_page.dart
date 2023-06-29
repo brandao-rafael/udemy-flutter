@@ -31,21 +31,27 @@ class PlacesListPage extends StatelessWidget {
                   child: const Center(
                     child: Text('Nenhum local cadastrado'),
                   ),
-                  builder: (ctx, greatPlaces, child) =>
-                      greatPlaces.itemsCount == 0
-                          ? child!
-                          : ListView.builder(
-                              itemCount: greatPlaces.itemsCount,
-                              itemBuilder: (ctx, i) => ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: FileImage(
-                                      greatPlaces.itemByIndex(i).image),
-                                ),
-                                title: Text(greatPlaces.itemByIndex(i).title),
-                                subtitle: Text(greatPlaces.itemByIndex(i).location!.address!),
-                                onTap: () {},
-                              ),
+                  builder: (ctx, greatPlaces, child) => greatPlaces
+                              .itemsCount == 0
+                      ? child!
+                      : ListView.builder(
+                          itemCount: greatPlaces.itemsCount,
+                          itemBuilder: (ctx, i) => ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  FileImage(greatPlaces.itemByIndex(i).image),
                             ),
+                            title: Text(greatPlaces.itemByIndex(i).title),
+                            subtitle: Text(
+                                greatPlaces.itemByIndex(i).location!.address!),
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                AppRoutes.PLACE_DETAIL,
+                                arguments: greatPlaces.itemByIndex(i),
+                              );
+                            },
+                          ),
+                        ),
                 ),
         ));
   }
