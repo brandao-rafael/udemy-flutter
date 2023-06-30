@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
               elevation: MaterialStateProperty.all(5)),
         ),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
+          // bodyLarge: TextStyle(color: Colors.white),
           bodySmall: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white),
         ),
