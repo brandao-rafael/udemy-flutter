@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.white),
         ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.amber,
+          seedColor: Colors.blue,
           outlineVariant: Colors.blue,
         ),
         useMaterial3: true,
