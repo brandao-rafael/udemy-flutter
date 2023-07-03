@@ -11,7 +11,7 @@ class ChatPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          foregroundColor: Theme.of(context).textTheme.bodyMedium?.color,
+          foregroundColor: Colors.white,
           elevation: 1,
           title: const Text('Cod3r Chat'),
           centerTitle: true,
@@ -47,7 +47,6 @@ class ChatPage extends StatelessWidget {
             )
           ],
         ),
-        backgroundColor: Colors.blue,
         body: const SafeArea(
           child: Column(
             children: [

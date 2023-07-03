@@ -24,11 +24,6 @@ class MyApp extends StatelessWidget {
                   MaterialStateColor.resolveWith((states) => Colors.white),
               elevation: MaterialStateProperty.all(5)),
         ),
-        textTheme: const TextTheme(
-          // bodyLarge: TextStyle(color: Colors.white),
-          bodySmall: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
-        ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
           outlineVariant: Colors.blue,
