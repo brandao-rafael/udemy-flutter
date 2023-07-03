@@ -37,9 +37,9 @@ class _AuthFormState extends State<AuthForm> {
 
     if (!isValid) return _showError('Campos Inválidos');
 
-    if (_formData.image == null && _formData.isSignup) {
-      return _showError('Imagem não selecionada');
-    }
+    // if (_formData.image == null && _formData.isSignup) {
+    //   return _showError('Imagem não selecionada');
+    // }
 
     widget.onSubmit(_formData);
   }
