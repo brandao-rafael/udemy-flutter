@@ -20,7 +20,7 @@ class MessageBubble extends StatelessWidget {
     ImageProvider? provider;
     final uri = Uri.parse(imageUrl);
 
-    if(uri.path.contains(_defaultImage)) {
+    if (uri.path.contains(_defaultImage)) {
       provider = const AssetImage(_defaultImage);
     } else if (uri.scheme.contains('http')) {
       provider = NetworkImage(uri.toString());
@@ -64,6 +64,9 @@ class MessageBubble extends StatelessWidget {
               ),
               width: 180,
               child: Column(
+                crossAxisAlignment: belongsToCurrentUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
                   Text(
                     message.userName,
@@ -74,6 +77,7 @@ class MessageBubble extends StatelessWidget {
                   ),
                   Text(
                     message.text,
+                    textAlign: belongsToCurrentUser ? TextAlign.right : TextAlign.left,
                     style: TextStyle(
                         color:
                             belongsToCurrentUser ? Colors.black : Colors.white),
