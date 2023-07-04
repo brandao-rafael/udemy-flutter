@@ -10,7 +10,7 @@ class AuthMockService implements AuthService {
     id: '456',
     name: 'Bia',
     email: 'teste@email.com',
-    imageURL: 'assets/images/avatar.png',
+    imageURL: 'lib/assets/images/avatar.png',
   );
 
   static Map<String, ChatUser> _users = {
@@ -44,7 +44,7 @@ class AuthMockService implements AuthService {
       id: Random().nextDouble().toString(),
       name: name,
       email: email,
-      imageURL: image?.path ?? 'assets/image/avatar.png',
+      imageURL: image?.path ?? 'lib/assets/image/avatar.png',
     );
 
     _users.putIfAbsent(email, () => newUser);
