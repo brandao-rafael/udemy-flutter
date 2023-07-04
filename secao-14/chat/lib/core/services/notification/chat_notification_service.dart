@@ -13,7 +13,7 @@ class ChatNotificationService with ChangeNotifier {
   }
 
   void add(ChatNotification notification) {
-    items.add(notification);
+    _items.add(notification);
     notifyListeners();
   }
 
