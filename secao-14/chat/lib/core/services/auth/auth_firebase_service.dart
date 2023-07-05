@@ -58,7 +58,7 @@ class AuthFirebaseService implements AuthService {
       await login(email, password);
 
       // 3. salvar usuário no banco de dados (opcional)
-      _currentUser = _toChatUser(credential.user!, name, imageUrl);
+      _currentUser = _toChatUser(credential.user!, imageUrl, name);
       await _saveChatUser(_currentUser!);
     }
 
