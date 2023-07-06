@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "295269079834",
+    "project_id": "cod3r-chat-1a41d",
+    "storage_bucket": "cod3r-chat-1a41d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295269079834:android:07b10ec97dd3909931aaa3",
+        "android_client_info": {
+          "package_name": "br.com.themonio92.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295269079834-kqmjf9kf0hm3glr43n078hss89e3rc3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzj0XoPc6y4xwZXvGOlzlbv20kwK0M4G4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295269079834-kqmjf9kf0hm3glr43n078hss89e3rc3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
