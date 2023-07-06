@@ -21,4 +21,10 @@ class ChatNotificationService with ChangeNotifier {
     _items.removeAt(i);
     notifyListeners();
   }
+
+  // Push notification
+  Future<void> init() async {
+    
+  }
+
 }
