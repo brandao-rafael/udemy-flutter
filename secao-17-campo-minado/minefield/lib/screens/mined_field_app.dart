@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:minefield/components/field_widget.dart';
+import 'package:minefield/components/board_widget.dart';
 import 'package:minefield/components/result_widget.dart';
-import 'package:minefield/models/explosion_exception.dart';
+import 'package:minefield/models/board.dart';
 import 'package:minefield/models/field.dart';
 
-class MinedFieldApp extends StatelessWidget {
+class MinedFieldApp extends StatefulWidget {
   const MinedFieldApp({super.key});
+
+  @override
+  State<MinedFieldApp> createState() => _MinedFieldAppState();
+}
+
+class _MinedFieldAppState extends State<MinedFieldApp> {
+  bool? _win;
+  final Board _board = Board(
+    lines: 12,
+    columns: 12,
+    amountOfBombs: 3,
+  );
 
   void _restart() {
     print('restart');
@@ -21,29 +33,17 @@ class MinedFieldApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Field neighbor1 = Field(line: 1, column: 0);
-    neighbor1.putMine();
-    Field neighbor2 = Field(line: 1, column: 1);
-    neighbor2.putMine();
-    Field field = Field(line: 0, column: 0);
-    field.addNeighbor(neighbor1);
-    field.addNeighbor(neighbor2);
-    
-    try {
-      // field.putMine();
-      field.changeAppointment();
-    } on ExplosionException catch (e) {
-      print(e);
-    }
-
     return MaterialApp(
       home: Scaffold(
-        appBar: ResultWidget(onRestart: _restart, win: null),
-        body: FieldWidget(
-          field: field,
+        appBar: ResultWidget(
+          win: _win,
+          onRestart: _restart,
+        ),
+        body: BoardWidget(
+          board: _board,
           onOpen: _open,
           onChangeAppointement: _changeAppointement,
-        )
+        ),
       ),
     );
   }
