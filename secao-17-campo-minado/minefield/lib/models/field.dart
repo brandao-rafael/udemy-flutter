@@ -49,7 +49,7 @@ class Field {
     }
   }
 
-  void mine() {
+  void putMine() {
     _undermined = true;
   }
 

@@ -5,7 +5,7 @@ main() {
   group('Field', () {
     test('Open Field WITH Explosion', () {
       Field f = Field(line: 0, column: 0);
-      f.mine();
+      f.putMine();
 
       expect(f.open, throwsException);
     });
@@ -41,10 +41,10 @@ main() {
     test('Mines neighborhood', () {
       Field f1 = Field(line: 3, column: 3);
       Field f2 = Field(line: 3, column: 4);
-      f2.mine();
+      f2.putMine();
       Field f3 = Field(line: 2, column: 2);
       Field f4 = Field(line: 4, column: 4);
-      f4.mine();
+      f4.putMine();
 
       f1.addNeighbor(f2);
       f1.addNeighbor(f3);
