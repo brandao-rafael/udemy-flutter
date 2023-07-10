@@ -22,13 +22,13 @@ class BoardWidget extends StatelessWidget {
     return SizedBox(
       child: GridView.count(
         crossAxisCount: board.columns,
-        children: board.fields
-            .map((f) => FieldWidget(
+        children: board.fields.map((f) {
+          return FieldWidget(
                   field: f,
                   onOpen: onOpen,
                   onChangeAppointement: onChangeAppointement,
-                ))
-            .toList(),
+                );
+        }).toList(),
       ),
     );
   }

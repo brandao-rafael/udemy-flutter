@@ -53,7 +53,7 @@ class Board {
     while(shuffled < amountOfBombs) {
       int i = Random().nextInt(_fields.length);
       
-      if(_fields[i].undermined) {
+      if(!_fields[i].undermined) {
         shuffled++;
         _fields[i].putMine();
       }

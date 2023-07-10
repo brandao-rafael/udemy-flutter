@@ -13,6 +13,7 @@ class MinedFieldApp extends StatefulWidget {
 
 class _MinedFieldAppState extends State<MinedFieldApp> {
   bool? _win;
+
   final Board _board = Board(
     lines: 12,
     columns: 12,
