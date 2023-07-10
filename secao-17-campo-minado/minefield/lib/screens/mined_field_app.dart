@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minefield/components/board_widget.dart';
 import 'package:minefield/components/result_widget.dart';
 import 'package:minefield/models/board.dart';
+import 'package:minefield/models/explosion_exception.dart';
 import 'package:minefield/models/field.dart';
 
 class MinedFieldApp extends StatefulWidget {
@@ -21,15 +22,36 @@ class _MinedFieldAppState extends State<MinedFieldApp> {
   );
 
   void _restart() {
-    print('restart');
+    setState(() {
+      _win = null;
+      _board.restart();
+    });
   }
 
   void _open(Field field) {
-    print('open');
+    if(_win != null) return;
+    
+    setState(() {
+      try {
+        field.open();
+        if(_board.solved) {
+          _win = true;
+        }
+      } on ExplosionException {
+        _win = false;
+        _board.showBombs();
+      }
+    });
   }
 
   void _changeAppointement(Field field) {
-    print('change appointement');
+    if(_win != null) return;
+    setState(() {
+      field.changeAppointment();
+      if(_board.solved) {
+        _win = true;
+      }
+    });
   }
 
   @override
