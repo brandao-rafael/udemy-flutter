@@ -89,8 +89,57 @@ mixin _$PomodoroStore on _PomodoroStore, Store {
     });
   }
 
+  late final _$intervalTypeAtom =
+      Atom(name: '_PomodoroStore.intervalType', context: context);
+
+  @override
+  IntervalType get intervalType {
+    _$intervalTypeAtom.reportRead();
+    return super.intervalType;
+  }
+
+  @override
+  set intervalType(IntervalType value) {
+    _$intervalTypeAtom.reportWrite(value, super.intervalType, () {
+      super.intervalType = value;
+    });
+  }
+
   late final _$_PomodoroStoreActionController =
       ActionController(name: '_PomodoroStore', context: context);
+
+  @override
+  void start() {
+    final _$actionInfo = _$_PomodoroStoreActionController.startAction(
+        name: '_PomodoroStore.start');
+    try {
+      return super.start();
+    } finally {
+      _$_PomodoroStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void stop() {
+    final _$actionInfo = _$_PomodoroStoreActionController.startAction(
+        name: '_PomodoroStore.stop');
+    try {
+      return super.stop();
+    } finally {
+      _$_PomodoroStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void restart() {
+    final _$actionInfo = _$_PomodoroStoreActionController.startAction(
+        name: '_PomodoroStore.restart');
+    try {
+      return super.restart();
+    } finally {
+      _$_PomodoroStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void incrementWorkTime() {
@@ -137,46 +186,14 @@ mixin _$PomodoroStore on _PomodoroStore, Store {
   }
 
   @override
-  void start() {
-    final _$actionInfo = _$_PomodoroStoreActionController.startAction(
-        name: '_PomodoroStore.start');
-    try {
-      return super.start();
-    } finally {
-      _$_PomodoroStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void stop() {
-    final _$actionInfo = _$_PomodoroStoreActionController.startAction(
-        name: '_PomodoroStore.stop');
-    try {
-      return super.stop();
-    } finally {
-      _$_PomodoroStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void restart() {
-    final _$actionInfo = _$_PomodoroStoreActionController.startAction(
-        name: '_PomodoroStore.restart');
-    try {
-      return super.restart();
-    } finally {
-      _$_PomodoroStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 started: ${started},
 minutes: ${minutes},
 seconds: ${seconds},
 workTime: ${workTime},
-restTime: ${restTime}
+restTime: ${restTime},
+intervalType: ${intervalType}
     ''';
   }
 }
