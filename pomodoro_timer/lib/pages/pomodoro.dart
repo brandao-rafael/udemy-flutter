@@ -20,27 +20,29 @@ class Pomodoro extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Observer(
-              builder: (_) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    EntryTime(
-                      value: store.workTime,
-                      title: 'Trabalho',
-                      inc: store.incrementWorkTime,
-                      dec: store.decreaseWorkTime,
-                    ),
-                    EntryTime(
-                      value: store.restTime,
-                      title: 'Descanso',
-                      inc: store.incrementRestTime,
-                      dec: store.decreaseRestTime,
-                    )
-                  ],
-                );
-              }
-            ),
+            child: Observer(builder: (_) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  EntryTime(
+                    value: store.workTime,
+                    title: 'Trabalho',
+                    inc: store.started && store.isWorking()
+                        ? null
+                        : store.incrementWorkTime,
+                    dec: store.started && store.isWorking()
+                        ? null
+                        : store.decreaseWorkTime,
+                  ),
+                  EntryTime(
+                    value: store.restTime,
+                    title: 'Descanso',
+                    inc: store.started && store.isResting() ? null : store.incrementRestTime,
+                    dec: store.started && store.isResting() ? null : store.decreaseRestTime,
+                  )
+                ],
+              );
+            }),
           ),
         ],
       ),
