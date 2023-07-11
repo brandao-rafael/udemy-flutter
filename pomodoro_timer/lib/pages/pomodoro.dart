@@ -6,17 +6,23 @@ class Pomodoro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         children: [
-          EntryTime(
-            value: 25,
-            title: 'Trabalho',
+          Text('Pomodoro'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              EntryTime(
+                value: 25,
+                title: 'Trabalho',
+              ),
+              EntryTime(
+                value: 5,
+                title: 'Descanso',
+              )
+            ],
           ),
-          EntryTime(
-            value: 5,
-            title: 'Descanso',
-          )
         ],
       ),
     );
