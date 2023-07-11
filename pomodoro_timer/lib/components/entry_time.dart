@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 class EntryTime extends StatelessWidget {
   final String title;
   final int value;
+  final void Function()? inc;
+  final void Function()? dec;
+
 
   const EntryTime({
     required this.value,
     required this.title,
+    this.inc,
+    this.dec,
     super.key,
   });
 
@@ -26,7 +31,7 @@ class EntryTime extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: dec,
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(15),
@@ -37,6 +42,7 @@ class EntryTime extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+    
             Text(
               '$value min',
               style: const TextStyle(
@@ -44,7 +50,7 @@ class EntryTime extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: inc,
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(15),
